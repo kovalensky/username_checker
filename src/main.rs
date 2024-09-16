@@ -96,7 +96,7 @@ impl App {
                         Ok(_) => self.stdout(&format!("{username} is free, sent the notification via bot!")),
                         _ => {
                             self.stdout(
-                                "{username} is free, but there was an Error contacting bot api",
+                                &format!("{username} is free, but there was an Error contacting bot api"),
                             );
                             continue 'outer;
                         }
