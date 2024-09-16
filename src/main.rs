@@ -20,8 +20,8 @@ struct App {
 struct Config {
     usernames: HashMap<String, String>,
     api_key: String,
-    user_id: u32,
     bot_id: u32,
+    user_id: u32,
     request_time: u64,
     queue_time: u64,
 }
