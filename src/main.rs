@@ -93,7 +93,7 @@ impl App {
 
                 if !body.contains(mask) {
                     match http_get(format!("{t_api}&text=@{username} -> Frei!")) {
-                        Ok(_) => self.stdout("{username} is free, sent the notification via bot!"),
+                        Ok(_) => self.stdout(&format!("{username} is free, sent the notification via bot!")),
                         _ => {
                             self.stdout(
                                 "{username} is free, but there was an Error contacting bot api",
