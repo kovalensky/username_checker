@@ -8,4 +8,4 @@ Hidden mode is activated via this:
 checker.exe hide
 ```
 
-This is not a claimer, but rather unpopular, unique usernames deletion checker.
+This is not a claimer, but rather unpopular, unique usernames deletion status checker.
