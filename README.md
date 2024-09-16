@@ -1,7 +1,7 @@
 # How to use
 
-Got releases, download the build, change config.toml to your variables, run the checker from cli.
-"mask" is a piece of text on t.me/profilem it could be a status, or name.
+Go to releases, download the build, change config.toml to your variables, run the checker from cli.
+"mask" is a piece of text on t.me/profile it could be a status, or name.
 
 Hidden mode is activated via this:
 ```bash
