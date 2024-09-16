@@ -47,7 +47,7 @@ impl App {
         }
     }
 
-    fn run(&mut self) {
+    fn run(&self) {
         if self.args.len() > 1 {
             if self.args[1] == "hide" {
                 self.start_hidden();
@@ -119,6 +119,6 @@ impl App {
 }
 
 fn main() {
-    let mut app = App::new();
+    let app = App::new();
     app.run();
 }
