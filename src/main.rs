@@ -1,5 +1,4 @@
 #![allow(dead_code, unused_variables)]
-//#![windows_subsystem = "windows"]
 
 use reqwest::blocking::get as http_get;
 use serde_derive::Deserialize;
@@ -19,6 +18,7 @@ struct App {
 
 #[derive(Deserialize)]
 struct Config {
+    usernames: HashMap<String, String>,
     api_key: String,
     user_id: u32,
     bot_id: u32,
@@ -68,15 +68,7 @@ impl App {
         exit(0);
     }
 
-    fn log_out(&self, msg: &str) {
-        if self.args.len() == 1 || self.args[1] != "hidden" {
-            println!("{msg}");
-        }
-    }
-
     fn app(&self) {
-        let usernames = HashMap::from([("gestapo", "GEHEIMESTAATSPOLIZEI")]);
-
         let t_api = format!(
             "https://api.telegram.org/bot{}:{}/sendMessage?chat_id={}",
             self.config.bot_id, self.config.api_key, self.config.user_id
@@ -84,16 +76,16 @@ impl App {
         let mut body = String::new();
 
         'outer: loop {
-            for (username, mask) in &usernames {
+            for (username, mask) in &self.config.usernames {
                 body.clear();
 
                 match http_get(format!("https://t.me/{username}")) {
                     Ok(mut response) => {
-                        self.log_out("Query for t.me is successful");
+                        self.stdout("Query for t.me is successful");
                         response.read_to_string(&mut body).unwrap();
                     }
                     _ => {
-                        self.log_out("t.me query Error re-trying in 3s");
+                        self.stdout("t.me query Error re-trying in 3s");
                         sleep(Duration::from_secs(3));
                         continue 'outer;
                     }
@@ -101,9 +93,9 @@ impl App {
 
                 if !body.contains(mask) {
                     match http_get(format!("{t_api}&text=@{username} -> Frei!")) {
-                        Ok(_) => self.log_out("{username} is free, sent the notification via bot!"),
+                        Ok(_) => self.stdout("{username} is free, sent the notification via bot!"),
                         _ => {
-                            self.log_out(
+                            self.stdout(
                                 "{username} is free, but there was an Error contacting bot api",
                             );
                             continue 'outer;
@@ -111,11 +103,17 @@ impl App {
                     }
                 }
 
-                if usernames.len() > 1 {
+                if self.config.usernames.len() > 1 {
                     sleep(Duration::from_secs(self.config.queue_time));
                 }
             }
             sleep(Duration::from_secs(self.config.request_time));
+        }
+    }
+
+    fn stdout(&self, msg: &str) {
+        if self.args.len() == 1 || self.args[1] != "hidden" {
+            println!("{msg}");
         }
     }
 }
