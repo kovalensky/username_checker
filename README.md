@@ -7,3 +7,5 @@ Hidden mode is activated via this:
 checker.exe hide
 ```
 
+This is not a claimer, but rather unpopular, unique usernames
+
